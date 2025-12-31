@@ -11,7 +11,7 @@ public class NotifyKeyMapping {
     private static KeyMapping requestUIKey;
 
     static private void bind() {
-        requestUIKey = KeyBindingHelper.registerKeyBinding(new KeyMapping("key.notify.openrequest", GLFW.GLFW_KEY_G, "category.notify.general"));
+        requestUIKey = KeyBindingHelper.registerKeyBinding(new KeyMapping("key.notify.openrequest", GLFW.GLFW_KEY_H, "category.notify.general"));
     }
 
     static public void register() {
