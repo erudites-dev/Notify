@@ -84,12 +84,12 @@ public class HelpScreen extends BaseOwoScreen<FlowLayout> {
         top.gap(8);
         top.surface(Surface.flat(COL_PANEL));
         top.padding(Insets.of(6));
-        top.child(filterBtn("전체", null));
-        top.child(filterBtn("접수", HELP_STATUS.PENDING));
-        top.child(filterBtn("진행중", HELP_STATUS.PROCESSING));
-        top.child(filterBtn("완료", HELP_STATUS.RESOLVED));
+        top.child(filterBtn("notify.screen.help.button.all", null));
+        top.child(filterBtn("notify.screen.help.button.pending", HELP_STATUS.PENDING));
+        top.child(filterBtn("notify.screen.help.button.processing", HELP_STATUS.PROCESSING));
+        top.child(filterBtn("notify.screen.help.button.resolved", HELP_STATUS.RESOLVED));
 
-        btnPurge = Components.button(net.minecraft.network.chat.Component.literal("정리"), b -> NotifyPacket.requestPurgeResolved());
+        btnPurge = Components.button(net.minecraft.network.chat.Component.translatable("notify.screen.help.button.purge"), b -> NotifyPacket.requestPurgeResolved());
         btnPurge.sizing(Sizing.fixed(48), Sizing.fixed(22));
         btnPurge.renderer(ButtonComponent.Renderer.flat(0xFF404040, 0xFF4C4C4C, 0xFF292929));
         btnPurge.active(true);
@@ -106,10 +106,10 @@ public class HelpScreen extends BaseOwoScreen<FlowLayout> {
         header.gap(6);
         header.surface(Surface.flat(COL_PANEL));
         header.padding(Insets.of(4));
-        header.child(colHeader("닉네임", COL_NICK_PCT));
-        header.child(colHeader("상태",   COL_STAT_PCT));
-        header.child(colHeader("처리자", COL_HAND_PCT));
-        header.child(colHeader("메시지", COL_MSG_PCT));
+        header.child(colHeader("notify.screen.help.header.player", COL_NICK_PCT));
+        header.child(colHeader("notify.screen.help.header.status",   COL_STAT_PCT));
+        header.child(colHeader("notify.screen.help.header.handler", COL_HAND_PCT));
+        header.child(colHeader("notify.screen.help.header.message", COL_MSG_PCT));
 
         // 리스트 컨테이너
         listBox = Containers.verticalFlow(Sizing.fill(100), Sizing.content());
@@ -130,9 +130,9 @@ public class HelpScreen extends BaseOwoScreen<FlowLayout> {
         right.gap(8);
         right.surface(Surface.flat(COL_PANEL));
         right.padding(Insets.of(6));
-        btnPending    = stateBtn("접수",   () -> changeStatusSelected(HELP_STATUS.PENDING));
-        btnProcessing = stateBtn("처리", () -> HelpProcessing(HelpClientState.findById(selectedID)));
-        btnResolved   = stateBtn("완료",   () -> changeStatusSelected(HELP_STATUS.RESOLVED));
+        btnPending    = stateBtn("notify.screen.help.button.pending",   () -> changeStatusSelected(HELP_STATUS.PENDING));
+        btnProcessing = stateBtn("notify.screen.help.button.processing", () -> HelpProcessing(HelpClientState.findById(selectedID)));
+        btnResolved   = stateBtn("notify.screen.help.button.resolved",   () -> changeStatusSelected(HELP_STATUS.RESOLVED));
         right.child(btnPending).child(btnProcessing).child(btnResolved);
         FlowLayout rightWrap = wrapWithBorder(right, 1);
 
@@ -162,7 +162,7 @@ public class HelpScreen extends BaseOwoScreen<FlowLayout> {
     }
 
     private ButtonComponent filterBtn(String name, HELP_STATUS status) {
-        ButtonComponent bc = Components.button(net.minecraft.network.chat.Component.literal(name), btn -> {
+        ButtonComponent bc = Components.button(net.minecraft.network.chat.Component.translatable(name), btn -> {
             currentFilter = status;
             selectedID = null;
             refresh();
@@ -173,7 +173,7 @@ public class HelpScreen extends BaseOwoScreen<FlowLayout> {
     }
 
     private LabelComponent colHeader(String text, int width) {
-        LabelComponent lbl = Components.label(net.minecraft.network.chat.Component.literal(text));
+        LabelComponent lbl = Components.label(net.minecraft.network.chat.Component.translatable(text));
         lbl.sizing(Sizing.fill(width), Sizing.content());
         lbl.color(Color.ofArgb(COL_TEXT));
         lbl.horizontalTextAlignment(HorizontalAlignment.LEFT);
@@ -191,7 +191,7 @@ public class HelpScreen extends BaseOwoScreen<FlowLayout> {
     }
 
     private LabelComponent colText(String text, int width) {
-        LabelComponent lbl = Components.label(net.minecraft.network.chat.Component.literal(text));
+        LabelComponent lbl = Components.label(net.minecraft.network.chat.Component.translatable(text));
         lbl.sizing(Sizing.fill(width), Sizing.content());
         lbl.color(Color.ofArgb(COL_TEXT_DIM));
         return lbl;
@@ -213,17 +213,17 @@ public class HelpScreen extends BaseOwoScreen<FlowLayout> {
     }
 
     private ButtonComponent stateBtn(String name, Runnable onClick) {
-        ButtonComponent bc = Components.button(net.minecraft.network.chat.Component.literal(name), btn -> onClick.run());
+        ButtonComponent bc = Components.button(net.minecraft.network.chat.Component.translatable(name), btn -> onClick.run());
         bc.sizing(Sizing.fill(100), Sizing.fixed(24));
         bc.renderer(ButtonComponent.Renderer.flat(0xFF404040, 0xFF4C4C4C, 0xFF292929));
         return bc;
     }
 
-    private String statusKo(HelpRequest request) {
+    private String statusTranslatable(HelpRequest request) {
         return switch (request.status) {
-            case PENDING -> "접수";
-            case PROCESSING -> "진행중";
-            case RESOLVED -> "완료";
+            case PENDING -> "notify.screen.help.button.pending";
+            case PROCESSING -> "notify.screen.help.button.processing";
+            case RESOLVED -> "notify.screen.help.button.resolved";
         };
     }
 
@@ -270,7 +270,7 @@ public class HelpScreen extends BaseOwoScreen<FlowLayout> {
             String message = (null == request.message || request.message.isBlank()) ? "" : request.message;
 
             row.child(colText(senderName,  COL_NICK_PCT));
-            row.child(colText(statusKo(request), COL_STAT_PCT));
+            row.child(colText(statusTranslatable(request), COL_STAT_PCT));
             row.child(colText(handlerName, COL_HAND_PCT));
             row.child(colText(message, COL_MSG_PCT));
 
