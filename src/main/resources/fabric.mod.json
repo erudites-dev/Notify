@@ -3,27 +3,21 @@
 	"id": "notify",
 	"version": "${version}",
 	"name": "Notify",
-	"description": "This is an example description! Tell everyone what your mod is about!",
-	"authors": [
-		"Me!"
-	],
+	"description": "Notify is an intuitive administrative utility that enhances server communication through high-visibility gradient announcements, instant system alerts, and a streamlined staff-call system.",
+	"author": [ "Pyke_Lee" ],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/erudites-dev/Notify"
 	},
-	"license": "CC0-1.0",
+	"license": "LGPL 3.0",
 	"icon": "assets/notify/icon.png",
 	"environment": "*",
 	"entrypoints": {
-		"main": [
-			"kr.pyke.Notify"
-		]
+		"main": [ "kr.pyke.notify.Notify" ],
+		"client": [ "kr.pyke.notify.NotifyClient" ]
 	},
-	"mixins": [
-		"notify.mixins.json"
-	],
+	"mixins": [ "notify.mixins.json" ],
 	"depends": {
-		"fabricloader": ">=0.18.4",
+		"fabricloader": ">=0.17.3",
 		"minecraft": "~1.21.1",
 		"java": ">=21",
 		"fabric-api": "*"

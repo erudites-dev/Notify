@@ -1,9 +1,11 @@
 {
 	"required": true,
-	"package": "kr.pyke.mixin",
+	"package": "kr.pyke.notify.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
+	],
+	"client": [
+		"client.notice.ChatComponentMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
