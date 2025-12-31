@@ -32,11 +32,27 @@ public class HelpRequestCommand {
 
             // 2. 통합 명령어 등록
             dispatcher.register(Commands.literal("도움")
-                .then(cooldownNode) // /도움 쿨타임 <초>
-                .then(Commands.argument("메시지", StringArgumentType.greedyString()) // /도움 <메시지>
+                .then(cooldownNode)
+
+                .then(Commands.argument("메시지", StringArgumentType.greedyString())
                     .executes(HelpRequestCommand::requestHelp)
                 )
-                .executes(ctx -> requestHelp(ctx, "도움이 필요합니다!")) // 메시지 없이 /도움 만 쳤을 때
+
+                .executes(ctx -> requestHelp(ctx, "도움이 필요합니다!"))
+            );
+
+            dispatcher.register(Commands.literal("staff-call")
+                .then(Commands.literal("cooldown")
+                    .requires(source -> source.hasPermission(2))
+                    .then(Commands.argument("ms", LongArgumentType.longArg(0))
+                        .executes(HelpRequestCommand::setHelpCooldown)
+                    ))
+
+                .then(Commands.argument("메시지", StringArgumentType.greedyString())
+                    .executes(HelpRequestCommand::requestHelp)
+                )
+
+                .executes(ctx -> requestHelp(ctx, "도움이 필요합니다!"))
             );
         }
 
