@@ -51,7 +51,7 @@ public class NoticeCommand {
         List<ServerPlayer> players = source.getServer().getPlayerList().getPlayers();
         for (ServerPlayer player : players) { ServerPlayNetworking.send(player, packet); }
 
-        NotifyHelper.sendSystemMessage(players, CHAT_BG_COLOR.LIME, Component.literal("전체 알림을 전송했습니다. (지속시간: " + duration + "초)"));
+        NotifyHelper.sendSystemMessage(players, CHAT_BG_COLOR.LIME, Component.translatable("notify.command.notice.message.default_toast", duration));
         Notify.LOGGER.info("Notice: [{}] {}", duration, componentMessage);
 
         return 1;

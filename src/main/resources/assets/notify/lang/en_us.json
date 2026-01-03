@@ -14,5 +14,6 @@
     "notify.screen.help.header.player": "Player",
     "notify.screen.help.header.status": "Status",
     "notify.screen.help.header.handler": "Handler",
-    "notify.screen.help.header.message": "Message"
+    "notify.screen.help.header.message": "Message",
+    "notify.command.notice.message.default_toast": "A global notification has been sent. (Duration: %ss)"
 }

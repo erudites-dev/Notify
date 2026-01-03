@@ -14,5 +14,6 @@
     "notify.screen.help.header.player": "닉네임",
     "notify.screen.help.header.status": "상태",
     "notify.screen.help.header.handler": "처리자",
-    "notify.screen.help.header.message": "메시지"
+    "notify.screen.help.header.message": "메시지",
+    "notify.command.notice.message.default_toast": "전체 알림을 전송했습니다. (지속시간: %d초)"
 }
