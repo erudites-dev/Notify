@@ -1,4 +1,18 @@
 {
     "key.notify.openrequest": "Open Request UI",
-    "category.notify.general": "Notify"
+    "category.notify.general": "Notify",
+    "notify.command.help.message.default_toast": "I need help!",
+    "notify.command.help.message.cooldown": "Cooldown",
+    "notify.command.help.message.cooldown_active": "You cannot request help yet. (Remaining: %ss)",
+    "notify.command.help.message.request_sent": "Help request sent to staff.",
+    "notify.command.help.message.config_changed": "Help command cooldown changed to %s seconds.",
+    "notify.screen.help.button.all": "All",
+    "notify.screen.help.button.pending": "Pending",
+    "notify.screen.help.button.processing": "Processing",
+    "notify.screen.help.button.resolved": "Resolved",
+    "notify.screen.help.button.purge": "Clear",
+    "notify.screen.help.header.player": "Player",
+    "notify.screen.help.header.status": "Status",
+    "notify.screen.help.header.handler": "Handler",
+    "notify.screen.help.header.message": "Message"
 }

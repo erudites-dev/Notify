@@ -23,22 +23,19 @@ public class HelpRequestCommand {
         private static final Map<UUID, Long> lastUsed = new HashMap<>(); // 쿨타임 저장용
 
         public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context, Commands.CommandSelection selection) {
-            // 1. 관리자용 쿨타임 설정 노드
-            var cooldownNode = Commands.literal("쿨타임")
-                .requires(source -> source.hasPermission(2))
-                .then(Commands.argument("ms", LongArgumentType.longArg(0))
-                    .executes(HelpRequestCommand::setHelpCooldown)
-                );
-
-            // 2. 통합 명령어 등록
+            // 통합 명령어 등록
             dispatcher.register(Commands.literal("도움")
-                .then(cooldownNode)
+                .then(Commands.literal("쿨타임")
+                    .requires(source -> source.hasPermission(2))
+                    .then(Commands.argument("ms", LongArgumentType.longArg(0))
+                        .executes(HelpRequestCommand::setHelpCooldown)
+                    ))
 
-                .then(Commands.argument("메시지", StringArgumentType.greedyString())
+                .then(Commands.argument("message", StringArgumentType.greedyString())
                     .executes(HelpRequestCommand::requestHelp)
                 )
 
-                .executes(ctx -> requestHelp(ctx, "도움이 필요합니다!"))
+                .executes(ctx -> requestHelp(ctx, "notify.command.help.message.default_toast"))
             );
 
             dispatcher.register(Commands.literal("staff-call")
@@ -48,17 +45,17 @@ public class HelpRequestCommand {
                         .executes(HelpRequestCommand::setHelpCooldown)
                     ))
 
-                .then(Commands.argument("메시지", StringArgumentType.greedyString())
+                .then(Commands.argument("message", StringArgumentType.greedyString())
                     .executes(HelpRequestCommand::requestHelp)
                 )
 
-                .executes(ctx -> requestHelp(ctx, "도움이 필요합니다!"))
+                .executes(ctx -> requestHelp(ctx, "notify.command.help.message.default_toast"))
             );
         }
 
         // 호출 요청 처리
         private static int requestHelp(CommandContext<CommandSourceStack> ctx) {
-            return requestHelp(ctx, StringArgumentType.getString(ctx, "메시지"));
+            return requestHelp(ctx, StringArgumentType.getString(ctx, "message"));
         }
 
         private static int requestHelp(CommandContext<CommandSourceStack> ctx, String message) {
@@ -75,7 +72,11 @@ public class HelpRequestCommand {
                 long remaining = (cooldownMs - (now - last)) / 1000L;
 
                 List<ServerPlayer> players = source.getServer().getPlayerList().getPlayers();
-                NotifyHelper.sendSystemMessage(players, CHAT_BG_COLOR.RED, Component.literal("아직 다시 호출할 수 없습니다. (남은 시간: " + remaining + "초)"));
+                NotifyHelper.sendSystemMessage(
+                    players,
+                    CHAT_BG_COLOR.RED,
+                    Component.translatable("notify.command.help.message.cooldown_active", remaining)
+                );
 
                 return 0;
             }
@@ -85,7 +86,11 @@ public class HelpRequestCommand {
             lastUsed.put(player.getUUID(), now);
 
             List<ServerPlayer> players = source.getServer().getPlayerList().getPlayers();
-            NotifyHelper.sendSystemMessage(players, CHAT_BG_COLOR.LIME, Component.literal("운영진에게 도움을 요청했습니다."));
+            NotifyHelper.sendSystemMessage(
+                players,
+                CHAT_BG_COLOR.LIME,
+                Component.translatable("notify.command.help.message.request_sent")
+            );
 
             return 1;
         }
@@ -96,9 +101,12 @@ public class HelpRequestCommand {
             cooldownMs = seconds * 1000L;
 
             List<ServerPlayer> players = ctx.getSource().getServer().getPlayerList().getPlayers();
-            NotifyHelper.sendSystemMessage(players, CHAT_BG_COLOR.LIME, Component.literal("도움 명령어 대기시간이 ").withStyle(ChatFormatting.WHITE)
-                .append(Component.literal(String.valueOf(seconds)).withStyle(ChatFormatting.YELLOW))
-                .append("초로 변경되었습니다.")
+            NotifyHelper.sendSystemMessage(
+                players,
+                CHAT_BG_COLOR.LIME,
+                Component.translatable("notify.command.help.message.config_changed",
+                    Component.literal(String.valueOf(seconds)).withStyle(ChatFormatting.YELLOW)
+                )
             );
 
             return 1;

@@ -1,4 +1,18 @@
 {
     "key.notify.openrequest": "Open Request UI",
-    "category.notify.general": "Notify"
+    "category.notify.general": "Notify",
+    "notify.command.help.message.default_toast": "도움이 필요합니다!",
+    "notify.command.help.message.cooldown": "쿨타임",
+    "notify.command.help.message.cooldown_active": "아직 다시 호출할 수 없습니다. (남은 시간: %s초)",
+    "notify.command.help.message.request_sent": "운영진에게 도움을 요청했습니다.",
+    "notify.command.help.message.config_changed": "도움 명령어 대기시간이 %s초로 변경되었습니다.",
+    "notify.screen.help.button.all": "전체",
+    "notify.screen.help.button.pending": "접수",
+    "notify.screen.help.button.processing": "진행중",
+    "notify.screen.help.button.resolved": "완료",
+    "notify.screen.help.button.purge": "정리",
+    "notify.screen.help.header.player": "닉네임",
+    "notify.screen.help.header.status": "상태",
+    "notify.screen.help.header.handler": "처리자",
+    "notify.screen.help.header.message": "메시지"
 }
