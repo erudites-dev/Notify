@@ -1,6 +1,8 @@
 package kr.pyke.notify.network.payload.s2c;
 
 import kr.pyke.notify.Notify;
+import kr.pyke.notify.client.cache.NameClientCache;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -22,4 +24,8 @@ public record S2C_NameUpdatePayload(UUID uuid, Component name) implements Custom
     );
 
     @Override public @NotNull Type<? extends CustomPacketPayload> type() { return ID; }
+
+    public static void handle(S2C_NameUpdatePayload payload, ClientPlayNetworking.Context context) {
+        context.client().execute(() -> NameClientCache.put(payload.uuid(), payload.name()));
+    }
 }

@@ -4,11 +4,10 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
+import kr.pyke.PykeLib;
 import kr.pyke.notify.Notify;
-import kr.pyke.notify.network.payload.s2c.S2C_SendAnnouncementPayload;
-import kr.pyke.notify.util.constants.CHAT_BG_COLOR;
 import kr.pyke.notify.util.helper.NotifyHelper;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import kr.pyke.util.constants.COLOR;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -22,7 +21,7 @@ public class AnnouncementCommand {
     private AnnouncementCommand() { }
 
     private static final SuggestionProvider<CommandSourceStack> COLOR_SUGGESTER = (ctx, builder) -> {
-        for (CHAT_BG_COLOR color : CHAT_BG_COLOR.values()) { builder.suggest(color.toString()); }
+        for (COLOR color : COLOR.values()) { builder.suggest(color.toString()); }
         return builder.buildFuture();
     };
 
@@ -47,19 +46,15 @@ public class AnnouncementCommand {
         CommandSourceStack source = ctx.getSource();
 
         String typeStr = StringArgumentType.getString(ctx, "color");
-        CHAT_BG_COLOR color = NotifyHelper.parseEnum(typeStr, CHAT_BG_COLOR.class);
+        COLOR color = NotifyHelper.parseEnum(typeStr, COLOR.class);
         int colorRGB = NotifyHelper.parseColor(Objects.requireNonNull(color));
 
         String rawMessage = StringArgumentType.getString(ctx, "message");
         String formattedMessage = rawMessage.replace("&", "§");
-        Component componentMessage = Component.literal(formattedMessage);
-
-        S2C_SendAnnouncementPayload packet = new S2C_SendAnnouncementPayload(colorRGB, componentMessage);
 
         List<ServerPlayer> players = source.getServer().getPlayerList().getPlayers();
-        for (ServerPlayer player : players) { ServerPlayNetworking.send(player, packet); }
-
-        Notify.LOGGER.info("Announcement: [{}] {}", color.name(), componentMessage);
+        PykeLib.sendBroadcastMessage(players, colorRGB, formattedMessage);
+        Notify.LOGGER.info("Announcement: [{}] {}", color.name(), Component.literal(formattedMessage));
 
         return 1;
     }

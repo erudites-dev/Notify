@@ -1,6 +1,8 @@
 package kr.pyke.notify.network.payload.c2s;
 
 import kr.pyke.notify.Notify;
+import kr.pyke.notify.util.state.HelpServerState;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -13,4 +15,11 @@ public record C2S_HelpRequestPurgePayload() implements CustomPacketPayload {
     public static final StreamCodec<RegistryFriendlyByteBuf, C2S_HelpRequestPurgePayload> STREAM_CODEC = StreamCodec.unit(new C2S_HelpRequestPurgePayload());
 
     @Override public @NotNull Type<? extends CustomPacketPayload> type() { return ID; }
+
+    public static void handle(C2S_HelpRequestPurgePayload payload, ServerPlayNetworking.Context context) {
+        context.server().execute(() -> {
+            if (!context.server().getPlayerList().isOp(context.player().getGameProfile())) { return; }
+            HelpServerState.purgeResolved(context.server());
+        });
+    }
 }

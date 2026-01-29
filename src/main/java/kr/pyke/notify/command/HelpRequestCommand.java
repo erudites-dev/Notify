@@ -4,9 +4,10 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.LongArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import kr.pyke.notify.util.constants.CHAT_BG_COLOR;
+import kr.pyke.PykeLib;
 import kr.pyke.notify.util.helper.NotifyHelper;
 import kr.pyke.notify.util.state.HelpServerState;
+import kr.pyke.util.constants.COLOR;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -72,11 +73,7 @@ public class HelpRequestCommand {
                 long remaining = (cooldownMs - (now - last)) / 1000L;
 
                 List<ServerPlayer> players = source.getServer().getPlayerList().getPlayers();
-                NotifyHelper.sendSystemMessage(
-                    players,
-                    CHAT_BG_COLOR.RED,
-                    Component.translatable("notify.command.help.message.cooldown_active", remaining)
-                );
+                PykeLib.sendSystemMessage(players, COLOR.RED.getColor(), Component.translatable("notify.command.help.message.cooldown_active", remaining).getString());
 
                 return 0;
             }
@@ -86,11 +83,7 @@ public class HelpRequestCommand {
             lastUsed.put(player.getUUID(), now);
 
             List<ServerPlayer> players = source.getServer().getPlayerList().getPlayers();
-            NotifyHelper.sendSystemMessage(
-                players,
-                CHAT_BG_COLOR.LIME,
-                Component.translatable("notify.command.help.message.request_sent")
-            );
+            PykeLib.sendSystemMessage(players, COLOR.LIME.getColor(), Component.translatable("notify.command.help.message.request_sent").getString());
 
             return 1;
         }
@@ -101,13 +94,7 @@ public class HelpRequestCommand {
             cooldownMs = seconds * 1000L;
 
             List<ServerPlayer> players = ctx.getSource().getServer().getPlayerList().getPlayers();
-            NotifyHelper.sendSystemMessage(
-                players,
-                CHAT_BG_COLOR.LIME,
-                Component.translatable("notify.command.help.message.config_changed",
-                    Component.literal(String.valueOf(seconds)).withStyle(ChatFormatting.YELLOW)
-                )
-            );
+            PykeLib.sendSystemMessage(players, COLOR.LIME.getColor(), Component.translatable("notify.command.help.message.config_changed", Component.literal(String.valueOf(seconds)).withStyle(ChatFormatting.YELLOW)).getString());
 
             return 1;
         }

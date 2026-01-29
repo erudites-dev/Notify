@@ -13,9 +13,9 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [ "kr.pyke.notify.Notify" ],
-		"client": [ "kr.pyke.notify.NotifyClient" ]
+		"client": [ "kr.pyke.notify.client.NotifyClient" ]
 	},
-	"mixins": [ "notify.mixins.json" ],
+	"mixins": [ ],
 	"depends": {
 		"fabricloader": ">=0.17.3",
 		"minecraft": "~1.21.1",

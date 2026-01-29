@@ -3,6 +3,8 @@ package kr.pyke.notify.network.payload.c2s;
 import kr.pyke.notify.Notify;
 import kr.pyke.notify.util.helper.NotifyHelper;
 import kr.pyke.notify.util.constants.HELP_STATUS;
+import kr.pyke.notify.util.state.HelpServerState;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -22,4 +24,11 @@ public record C2S_HelpRequestChangeStatusPayload(UUID requestId, HELP_STATUS sta
     );
 
     @Override public @NotNull Type<? extends CustomPacketPayload> type() { return ID; }
+
+    public static void handle(C2S_HelpRequestChangeStatusPayload payload, ServerPlayNetworking.Context context) {
+        context.server().execute(() -> {
+            if (!context.server().getPlayerList().isOp(context.player().getGameProfile())) { return; }
+            HelpServerState.setStatus(context.server(), context.player(), payload.requestId(), payload.status());
+        });
+    }
 }

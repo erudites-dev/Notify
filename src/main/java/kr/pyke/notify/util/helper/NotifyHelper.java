@@ -1,20 +1,14 @@
 package kr.pyke.notify.util.helper;
 
 import io.netty.buffer.ByteBuf;
-import kr.pyke.notify.Notify;
-import kr.pyke.notify.network.payload.s2c.S2C_SendAnnouncementPayload;
-import kr.pyke.notify.network.payload.s2c.S2C_SendColorChatBox;
-import kr.pyke.notify.util.constants.CHAT_BG_COLOR;
 import kr.pyke.notify.util.constants.HELP_STATUS;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.ChatFormatting;
+import kr.pyke.util.constants.COLOR;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
@@ -27,7 +21,7 @@ public class NotifyHelper {
         catch (IllegalArgumentException ex) { return null; }
     }
 
-    public static int parseColor(CHAT_BG_COLOR color) {
+    public static int parseColor(COLOR color) {
         switch(color) {
             case RED -> { return 0xFF5555; }
             case GOLD -> { return 0xFFAA00; }
@@ -35,6 +29,7 @@ public class NotifyHelper {
             case LIME -> { return 0x55FF55; }
             case AQUA -> { return 0x55FFFF; }
             case DARK_AQUA -> { return 0x00AAAA; }
+            case BLUE -> { return 0x5555FF; }
             case LIGHT_PURPLE -> { return 0xFF55FF; }
             case PURPLE -> { return 0xAA00AA; }
         }
@@ -52,14 +47,5 @@ public class NotifyHelper {
         }
 
         return Component.literal("Unknown");
-    }
-
-    public static void sendSystemMessage(List<ServerPlayer> players, CHAT_BG_COLOR color, Component message) {
-        int colorRGB = NotifyHelper.parseColor(color);
-        Component component = Notify.SYSTEM_PREFIX.copy().append(message.copy().withStyle(ChatFormatting.WHITE));
-
-        S2C_SendColorChatBox packet = new S2C_SendColorChatBox(colorRGB, component);
-
-        for (ServerPlayer serverPlayer : players) { ServerPlayNetworking.send(serverPlayer, packet); }
     }
 }

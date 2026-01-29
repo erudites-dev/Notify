@@ -1,6 +1,8 @@
 package kr.pyke.notify.network.payload.s2c;
 
 import kr.pyke.notify.Notify;
+import kr.pyke.notify.client.hud.NoticeHud;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
@@ -20,4 +22,8 @@ public record S2C_SendNoticePayload(Component message, int expirationTime) imple
     );
 
     @Override public @NotNull CustomPacketPayload.Type<? extends CustomPacketPayload> type() { return ID; }
+
+    public static void handle(S2C_SendNoticePayload payload, ClientPlayNetworking.Context context) {
+        context.client().execute(() -> NoticeHud.updateMessage(payload.message(), payload.expirationTime()));
+    }
 }

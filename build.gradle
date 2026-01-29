@@ -12,6 +12,7 @@ base {
 
 repositories {
 	maven { url 'https://maven.wispforest.io/releases/' }
+	maven { url = uri("https://jitpack.io") }
 }
 
 dependencies {
@@ -26,6 +27,9 @@ dependencies {
 	// owo lib
 	modImplementation "io.wispforest:owo-lib:${project.owo_version}"
 	annotationProcessor "io.wispforest:owo-lib:${project.owo_version}"
+
+	// Pyke Lib
+	modImplementation "com.github.Pyke-Lee:PykeLib:${project.pyke_lib_version}"
 }
 
 processResources {

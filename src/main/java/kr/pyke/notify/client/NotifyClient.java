@@ -1,4 +1,4 @@
-package kr.pyke.notify;
+package kr.pyke.notify.client;
 
 import kr.pyke.notify.client.hud.HelpHud;
 import kr.pyke.notify.client.hud.NoticeHud;

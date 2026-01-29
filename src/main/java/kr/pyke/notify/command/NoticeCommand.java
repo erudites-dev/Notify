@@ -4,10 +4,11 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import kr.pyke.PykeLib;
 import kr.pyke.notify.Notify;
 import kr.pyke.notify.network.payload.s2c.S2C_SendNoticePayload;
-import kr.pyke.notify.util.constants.CHAT_BG_COLOR;
 import kr.pyke.notify.util.helper.NotifyHelper;
+import kr.pyke.util.constants.COLOR;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -51,7 +52,7 @@ public class NoticeCommand {
         List<ServerPlayer> players = source.getServer().getPlayerList().getPlayers();
         for (ServerPlayer player : players) { ServerPlayNetworking.send(player, packet); }
 
-        NotifyHelper.sendSystemMessage(players, CHAT_BG_COLOR.LIME, Component.translatable("notify.command.notice.message.default_toast", duration));
+        PykeLib.sendSystemMessage(players, COLOR.LIME.getColor(), Component.translatable("notify.command.notice.message.default_toast", duration).getString());
         Notify.LOGGER.info("Notice: [{}] {}", duration, componentMessage);
 
         return 1;

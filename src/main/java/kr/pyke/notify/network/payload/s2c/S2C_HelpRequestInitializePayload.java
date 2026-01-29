@@ -1,7 +1,9 @@
 package kr.pyke.notify.network.payload.s2c;
 
 import kr.pyke.notify.Notify;
+import kr.pyke.notify.client.state.HelpClientState;
 import kr.pyke.notify.data.request.HelpRequest;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -20,4 +22,8 @@ public record S2C_HelpRequestInitializePayload(List<HelpRequest> requests) imple
     );
 
     @Override public @NotNull Type<? extends CustomPacketPayload> type() { return ID; }
+
+    public static void handle(S2C_HelpRequestInitializePayload payload, ClientPlayNetworking.Context context) {
+        context.client().execute(() -> HelpClientState.onFullSync(payload.requests()));
+    }
 }
