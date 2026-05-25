@@ -50,7 +50,7 @@ public class HelpServerState {
 
         for (ServerPlayer player : playerlist.getPlayers()) {
             if (playerlist.isOp(player.getGameProfile())) {
-                ServerPlayNetworking.send(player, payload); //
+                ServerPlayNetworking.send(player, payload);
             }
         }
     }
